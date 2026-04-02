@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Helping Hands Donation System</title>
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary: #64748b;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --gray-light: #f1f5f9;
+            --gray-border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary);
+            cursor: pointer;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        section {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography */
+        h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.75rem; font-weight: 600; margin-bottom: 1.5rem; }
+        h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.75rem; }
+        .subtitle { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 2rem; }
+
+        /* Cards */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-border);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-success { background: #10b981; color: white; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-warning { background: #f59e0b; color: white; }
+        .btn-outline { background: transparent; border: 1px solid var(--gray-border); color: var(--text-muted); }
+        .btn-outline:hover { background: var(--gray-light); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* Forms */
+        .form-group { margin-bottom: 1.25rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 500; font-size: 0.9rem; }
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--gray-border);
+            outline: none;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+        }
+        input:focus { border-color: var(--primary); }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+        }
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: #eff6ff;
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        /* Success Message */
+        .success-banner {
+            background: #dcfce7;
+            color: #166534;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        /* Role Selection */
+        .role-selection {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+        .role-card {
+            width: 250px;
+            cursor: pointer;
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+        .role-card i { font-size: 3rem; color: var(--primary); margin-bottom: 1rem; }
+
+        /* Map and Route */
+        .route-info {
+            background: #eff6ff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #bfdbfe;
+        }
+        .route-step { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--primary); font-weight: 600; }
+        .map-container {
+            width: 100%;
+            height: 250px;
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--gray-border);
+            position: relative;
+        }
+        .map-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255,255,255,0.9);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+        .map-container iframe { width: 100%; height: 100%; border: none; }
+
+        /* Freshness Check */
+        .freshness-check {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Image Preview */
+        .img-preview {
+            width: 100%;
+            height: 150px;
+            background: var(--gray-light);
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px dashed var(--gray-border);
+        }
+        .img-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .role-selection { flex-direction: column; align-items: center; }
+            h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo" onclick="showSection('home')">
+            <i data-lucide="heart-handshake"></i>
+            Helping Hands
+        </div>
+        <div class="nav-links">
+            <a onclick="showSection('home')">Home</a>
+            <a onclick="handleDonateClick()">Donate</a>
+            <a onclick="handleVolunteerLoginClick()">Volunteer Login</a>
+            <a onclick="showSection('register')">Register</a>
+            <a onclick="showSection('to-do-service')">To Do Service</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <!-- Home Page -->
+        <section id="home" class="active">
+            <div style="text-align: center; padding: 3rem 0;">
+                <h1>Helping Hands Donation System</h1>
+                <p class="subtitle">Connecting donors, volunteers, and people in need</p>
+            </div>
+
+            <div class="features">
+                <div class="card feature-card">
+                    <div class="feature-icon"><i data-lucide="heart"></i></div>
+                    <h3>Easy Donation</h3>
+                </div>
+                <div class="card feature-card">
+                    <div class="feature-icon"><i data-lucide="clipboard-list"></i></div>
+                    <h3>Request System</h3>
+                </div>
+                <div class="card feature-card">
+                    <div class="feature-icon"><i data-lucide="truck"></i></div>
+                    <h3>Volunteer Delivery</h3>
+                </div>
+                <div class="card feature-card">
+                    <div class="feature-icon"><i data-lucide="shield-check"></i></div>
+                    <h3>Freshness Check</h3>
+                </div>
+            </div>
+
+            <h2>Available Donations</h2>
+            <div class="grid" id="available-donations">
+                <!-- Initial Items -->
+                <div class="card">
+                    <h3>School Bags</h3>
+                    <p class="subtitle"><i data-lucide="map-pin" style="width:14px; height:14px"></i> Bhimavaram</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="requestItem('School Bags', 'Bhimavaram')">Request Item</button>
+                </div>
+                <div class="card">
+                    <h3>Rice Bags</h3>
+                    <p class="subtitle"><i data-lucide="map-pin" style="width:14px; height:14px"></i> Bhimavaram</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="requestItem('Rice Bags', 'Bhimavaram')">Request Item</button>
+                </div>
+                <div class="card">
+                    <h3>Books</h3>
+                    <p class="subtitle"><i data-lucide="map-pin" style="width:14px; height:14px"></i> Bhimavaram</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="requestItem('Books', 'Bhimavaram')">Request Item</button>
+                </div>
+            </div>
+
+            <h2 style="margin-top: 4rem;">Requested Items</h2>
+            <div class="grid" id="requested-items">
+                <!-- Dynamic Content -->
+            </div>
+        </section>
+
+        <!-- Register -->
+        <section id="register">
+            <div class="form-card card" style="max-width: 500px; margin: 0 auto;">
+                <div id="reg-success" class="success-banner">Registration Successful ✅</div>
+                <h2>Register</h2>
+                <form id="register-form" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="reg-name" required placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="reg-pass" required placeholder="Enter password">
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="reg-loc" required placeholder="Enter location">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Login -->
+        <section id="login">
+            <div class="form-card card" style="max-width: 500px; margin: 0 auto;">
+                <h2 id="login-title">Login</h2>
+                <form id="login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" id="login-name" required placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="login-pass" required placeholder="Enter password">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- To Do Service -->
+        <section id="to-do-service">
+            <h2 style="text-align: center;">Select Your Role</h2>
+            <div class="role-selection">
+                <div class="card role-card" onclick="selectRole('Donor')">
+                    <i data-lucide="user"></i>
+                    <h3>Donor</h3>
+                </div>
+                <div class="card role-card" onclick="selectRole('Volunteer')">
+                    <i data-lucide="truck"></i>
+                    <h3>Volunteer</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Donor Dashboard -->
+        <section id="donor-dashboard">
+            <div class="dashboard-header">
+                <h2>Donor Dashboard</h2>
+                <button class="btn btn-outline" onclick="logout()"><i data-lucide="log-out"></i> Logout</button>
+            </div>
+            <div class="card" style="max-width: 600px; margin: 0 auto;">
+                <div id="don-success" class="success-banner">Donation Placed Successfully ✅</div>
+                <h3>Submit a Donation</h3>
+                <form id="donation-form" onsubmit="handleDonationSubmit(event)">
+                    <div class="form-group">
+                        <label>Item Name</label>
+                        <input type="text" id="don-item" required placeholder="e.g. Rice Bags">
+                    </div>
+                    <div class="form-group">
+                        <label>Location</label>
+                        <input type="text" id="don-loc" required placeholder="e.g. Bhimavaram">
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Image</label>
+                        <input type="file" id="don-img" accept="image/*" onchange="previewImage(event)">
+                        <div class="img-preview" id="img-preview-box">
+                            <span id="preview-text">No image selected</span>
+                            <img id="preview-img" src="" style="display: none;">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Donation</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Volunteer Dashboard -->
+        <section id="volunteer-dashboard">
+            <div class="dashboard-header">
+                <h2>Volunteer Dashboard</h2>
+                <button class="btn btn-outline" onclick="logout()"><i data-lucide="log-out"></i> Logout</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                <!-- Requests Column -->
+                <div>
+                    <h3>Requests</h3>
+                    <div id="volunteer-requests" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Dynamic Content -->
+                    </div>
+                </div>
+
+                <!-- Assigned Tasks Column -->
+                <div>
+                    <h3>Assigned Tasks</h3>
+                    <div id="assigned-tasks" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Dynamic Content -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        // State
+        let currentRole = null;
+        let requests = [];
+        let availableDonations = [
+            { id: 1, name: 'School Bags', location: 'Bhimavaram' },
+            { id: 2, name: 'Rice Bags', location: 'Bhimavaram' },
+            { id: 3, name: 'Books', location: 'Bhimavaram' }
+        ];
+        let assignedTasks = [];
+
+        // Navigation
+        function showSection(id) {
+            document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            lucide.createIcons();
+            window.scrollTo(0, 0);
+        }
+
+        function handleDonateClick() {
+            if (currentRole === 'Donor') showSection('donor-dashboard');
+            else {
+                currentRole = 'Donor';
+                showSection('login');
+            }
+        }
+
+        function handleVolunteerLoginClick() {
+            if (currentRole === 'Volunteer') showSection('volunteer-dashboard');
+            else {
+                currentRole = 'Volunteer';
+                showSection('login');
+            }
+        }
+
+        function selectRole(role) {
+            currentRole = role;
+            showSection('register');
+        }
+
+        function logout() {
+            currentRole = null;
+            showSection('home');
+        }
+
+        // Auth
+        function handleRegister(e) {
+            e.preventDefault();
+            document.getElementById('reg-success').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('reg-success').style.display = 'none';
+                showSection('login');
+            }, 1500);
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            if (currentRole === 'Donor') showSection('donor-dashboard');
+            else if (currentRole === 'Volunteer') showSection('volunteer-dashboard');
+            else showSection('home');
+        }
+
+        // Home Logic
+        function requestItem(name, location) {
+            const req = { id: Date.now(), name, location, status: 'Pending' };
+            requests.push(req);
+            renderRequests();
+            renderVolunteerRequests();
+            alert(`Request sent for ${name}!`);
+        }
+
+        function renderRequests() {
+            const container = document.getElementById('requested-items');
+            container.innerHTML = requests.map(r => `
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3>${r.name}</h3>
+                        <span style="background: #fef9c3; color: #854d0e; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">${r.status}</span>
+                    </div>
+                    <p class="subtitle"><i data-lucide="map-pin" style="width:14px; height:14px"></i> ${r.location}</p>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Donor Logic
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('preview-img');
+                output.src = reader.result;
+                output.style.display = 'block';
+                document.getElementById('preview-text').style.display = 'none';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function handleDonationSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('don-item').value;
+            const loc = document.getElementById('don-loc').value;
+            
+            const newItem = { id: Date.now(), name, location: loc };
+            availableDonations.push(newItem);
+            renderAvailableDonations();
+
+            document.getElementById('don-success').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('don-success').style.display = 'none';
+                e.target.reset();
+                document.getElementById('preview-img').style.display = 'none';
+                document.getElementById('preview-text').style.display = 'block';
+            }, 2000);
+        }
+
+        function renderAvailableDonations() {
+            const container = document.getElementById('available-donations');
+            container.innerHTML = availableDonations.map(d => `
+                <div class="card">
+                    <h3>${d.name}</h3>
+                    <p class="subtitle"><i data-lucide="map-pin" style="width:14px; height:14px"></i> ${d.location}</p>
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1rem;" onclick="requestItem('${d.name}', '${d.location}')">Request Item</button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Volunteer Logic
+        function renderVolunteerRequests() {
+            const container = document.getElementById('volunteer-requests');
+            if (requests.length === 0) {
+                container.innerHTML = '<p class="subtitle">No pending requests.</p>';
+                return;
+            }
+            container.innerHTML = requests.map(r => `
+                <div class="card">
+                    <h3>${r.name}</h3>
+                    <p class="subtitle"><i data-lucide="map-pin" style="width:14px; height:14px"></i> ${r.location}</p>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                        <button class="btn btn-success btn-sm" style="flex: 1" onclick="acceptRequest(${r.id})">Accept</button>
+                        <button class="btn btn-danger btn-sm" style="flex: 1" onclick="rejectRequest(${r.id})">Reject</button>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function acceptRequest(id) {
+            const reqIdx = requests.findIndex(r => r.id === id);
+            const req = requests.splice(reqIdx, 1)[0];
+            
+            const task = {
+                ...req,
+                pickup: 'Bhimavaram Hub',
+                delivery: req.location,
+                freshness: null
+            };
+            assignedTasks.push(task);
+            
+            renderRequests();
+            renderVolunteerRequests();
+            renderAssignedTasks();
+        }
+
+        function rejectRequest(id) {
+            const reqIdx = requests.findIndex(r => r.id === id);
+            requests.splice(reqIdx, 1);
+            renderRequests();
+            renderVolunteerRequests();
+        }
+
+        function renderAssignedTasks() {
+            const container = document.getElementById('assigned-tasks');
+            if (assignedTasks.length === 0) {
+                container.innerHTML = '<p class="subtitle">No assigned tasks.</p>';
+                return;
+            }
+            container.innerHTML = assignedTasks.map(t => `
+                <div class="card">
+                    <h3>${t.name}</h3>
+                    <div style="font-size: 0.85rem; margin-bottom: 1rem;">
+                        <p><strong>Pickup:</strong> ${t.pickup}</p>
+                        <p><strong>Delivery:</strong> ${t.delivery}</p>
+                    </div>
+
+                    <div class="route-info">
+                        <p style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem;">OPTIMIZED ROUTE (PROTOTYPE)</p>
+                        <div class="route-step">
+                            <span>Pickup</span> <i data-lucide="arrow-right" style="width:12px"></i>
+                            <span>Main Road</span> <i data-lucide="arrow-right" style="width:12px"></i>
+                            <span>Hub</span> <i data-lucide="arrow-right" style="width:12px"></i>
+                            <span>Delivery</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; font-size: 0.8rem;">
+                            <span><i data-lucide="clock" style="width:12px"></i> 20 mins</span>
+                            <span style="color: #10b981; font-weight: 700;">Saved 2 km</span>
+                        </div>
+                    </div>
+
+                    <div class="map-container">
+                        <div class="map-label">Live Route View</div>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30588.42337750836!2d81.51152431083984!3d16.544893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a37d2e069176311%3A0x67398b671444986e!2sBhimavaram%2C%20Andhra%20Pradesh!5e0!3m2!1sen!2sin!4v1711890000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+
+                    <div style="margin-top: 1.5rem;">
+                        <p style="font-size: 0.8rem; font-weight: 700; margin-bottom: 0.5rem;">FRESHNESS CHECK</p>
+                        <div class="freshness-check">
+                            <button class="btn btn-outline btn-sm" onclick="setFreshness(${t.id}, 'fresh')" style="${t.freshness === 'fresh' ? 'background: #dcfce7; border-color: #10b981;' : ''}">Fresh ✅</button>
+                            <button class="btn btn-outline btn-sm" onclick="setFreshness(${t.id}, 'medium')" style="${t.freshness === 'medium' ? 'background: #fef3c7; border-color: #f59e0b;' : ''}">Medium ⚠️</button>
+                            <button class="btn btn-outline btn-sm" onclick="setFreshness(${t.id}, 'bad')" style="${t.freshness === 'bad' ? 'background: #fee2e2; border-color: #ef4444;' : ''}">Not Suitable ❌</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" style="width: 100%; margin-top: 1.5rem;" 
+                        ${t.freshness === 'bad' || t.freshness === null ? 'disabled' : ''} 
+                        onclick="deliverTask(${t.id})">
+                        Mark as Delivered
+                    </button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function setFreshness(id, status) {
+            const task = assignedTasks.find(t => t.id === id);
+            task.freshness = status;
+            renderAssignedTasks();
+        }
+
+        function deliverTask(id) {
+            const taskIdx = assignedTasks.findIndex(t => t.id === id);
+            assignedTasks.splice(taskIdx, 1);
+            renderAssignedTasks();
+            alert('Item delivered successfully! ✅');
+        }
+
+        // Init
+        lucide.createIcons();
+    </script>
+</body>
+</html>
